@@ -1,0 +1,27 @@
+---
+interface Props { small?: boolean; }
+const { small = false } = Astro.props;
+const id = small ? 'small' : 'hero';
+---
+<svg class:list={['landscape', { small }]} viewBox="0 0 740 560" fill="none" aria-hidden="true">
+  <defs>
+    <filter id={`wash-${id}`}><feTurbulence baseFrequency=".012 .035" numOctaves="3" seed="11" result="noise" /><feDisplacementMap in="SourceGraphic" in2="noise" scale="14" /></filter>
+    <linearGradient id={`mountain-${id}`} x1="300" y1="160" x2="400" y2="490" gradientUnits="userSpaceOnUse"><stop stop-color="#4e6b5c" stop-opacity=".6" /><stop offset="1" stop-color="#6d8f7d" stop-opacity="0" /></linearGradient>
+    <linearGradient id={`fade-${id}`} x1="0" y1="100" x2="0" y2="550" gradientUnits="userSpaceOnUse"><stop stop-color="#6d8f7d" stop-opacity=".23" /><stop offset="1" stop-color="#f5f1e7" stop-opacity="0" /></linearGradient>
+  </defs>
+  <circle cx="510" cy="146" r="57" fill="#e9e3d5" />
+  <g filter={`url(#wash-${id})`}>
+    <path d="m80 351 73-72 41-10 46-53 35 13 56-82 48 51 40-20 69 77 44-15 87 116 91 35H80Z" fill={`url(#fade-${id})`} />
+    <path d="m164 401 67-60 37-8 71-92 34 33 41-80 34 41 34 12 31 55 23-6 54 91 99 43Z" fill={`url(#mountain-${id})`} />
+    <path d="m317 447 45-52 30 5 58-74 32 22 36-33 63 85 33 8 71 56Z" fill={`url(#fade-${id})`} />
+  </g>
+  <g stroke="#23282a" stroke-linecap="round">
+    <path d="M139 527c40-91 38-158 20-238-13-65-14-104 1-145" stroke-width="6" />
+    <path d="M158 354c-33-32-63-52-111-64M163 309c32-31 58-49 97-56M153 256c-32-31-48-51-62-80M154 225c24-19 47-28 76-30M167 404c34-15 63-18 90-17" stroke-width="2.6" />
+  </g>
+  <g fill="#4e6b5c">
+    <path d="M54 292c-33-8-42-24-44-41 26 2 40 18 44 41ZM86 303c-16-27-14-48-4-62 16 22 18 42 4 62ZM108 319c-3-24 4-42 18-49 7 22 0 42-18 49ZM204 279c-2-30 9-47 29-53-1 24-10 41-29 53ZM224 263c19-21 39-25 57-17-16 20-35 25-57 17ZM115 218c-29-6-42-21-44-40 24 3 38 18 44 40ZM100 189c-13-25-10-42 1-55 13 22 12 40-1 55ZM184 209c7-29 20-42 39-41-8 26-22 40-39 41ZM211 198c20-13 40-12 53-1-19 13-36 14-53 1ZM150 161c-19-21-21-41-13-57 18 17 23 35 13 57ZM159 153c2-29 13-45 31-49-1 26-13 43-31 49ZM204 394c7-25 22-37 40-34-9 23-22 35-40 34ZM234 387c25-12 44-10 57 4-24 10-42 9-57-4Z" />
+  </g>
+  <g stroke="#23282a" stroke-width="1.7" stroke-linecap="round"><path d="m410 139 9-4 9 4m9-19 7-3 7 3m-71 43 6-3 6 3" /></g>
+  <path d="M24 531c141-7 251-12 399-5" stroke="#6d8f7d" stroke-width="2" stroke-linecap="round" opacity=".35" />
+</svg>

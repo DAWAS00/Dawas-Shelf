@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import ResourceCard from './ResourceCard.astro';
+import Icon from './Icon.astro';
+import InkStroke from './InkStroke.astro';
+import { types, recommended } from '../lib/resources';
+const resources = (await getCollection('resources')).sort(recommended);
+---
+<section class="library container" id="library" aria-labelledby="library-title" data-library>
+  <div class="section-heading"><div><span class="eyebrow">Find your next useful thing</span><h2 id="library-title">The collection<span class="heading-dot">.</span></h2></div><p>Less noise. More things worth keeping.</p></div>
+  <form class="search-form" role="search" autocomplete="off"><label class="sr-only" for="resource-search">Search the library</label><div class="search-field"><Icon name="search" size={22} /><input id="resource-search" type="search" name="q" placeholder="A tool, an idea, a better way…" /><span class="search-shortcut" aria-hidden="true">/</span><InkStroke /></div></form>
+  <div class="library-toolbar"><div class="filters" role="group" aria-label="Resource type">{types.map(type => <button type="button" class:list={['filter-button', { selected: type.value === 'all' }]} aria-pressed={type.value === 'all' ? 'true' : 'false'} data-filter={type.value}>{type.label}<span>{type.value === 'all' ? resources.length : resources.filter(r => r.data.type === type.value).length}</span><InkStroke /></button>)}</div></div>
+  <div class="results-toolbar"><p id="result-count" role="status" aria-live="polite" aria-atomic="true">{resources.length} resources to explore</p><div class="result-controls"><button type="button" class="saved-filter" data-saved-filter aria-pressed="false"><Icon name="bookmark" size={15} /> Saved only</button><label for="sort-order" class="sr-only">Sort resources</label><select id="sort-order" name="sort"><option value="curated">Curated order</option><option value="newest">Recently updated</option><option value="az">Name: A to Z</option></select></div></div>
+  <noscript><p class="noscript-note">All resources are listed below. Enable JavaScript to search, filter, copy, and save.</p></noscript>
+  <div class="resource-grid" id="resource-grid">{resources.map((resource, index) => <ResourceCard resource={resource} index={index} filterable />)}</div>
+  <div class="empty-state" id="empty-state" hidden><span class="empty-mark" aria-hidden="true">◌</span><h3>Room for a different idea.</h3><p id="empty-message">Try a different search, or give another category a look.</p><button type="button" class="text-link" data-reset>Clear all filters <Icon name="arrow" size={18} /></button></div>
+  <p class="library-end"><span aria-hidden="true">✳</span> A growing shelf, one useful find at a time.</p>
+</section>
+<script>import '../scripts/library';</script>

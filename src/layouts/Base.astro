@@ -1,0 +1,49 @@
+---
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/600-italic.css';
+import '@fontsource/spectral/300.css';
+import '@fontsource/spectral/400.css';
+import '@fontsource/spectral/600.css';
+import '@fontsource/ma-shan-zheng/400.css';
+import '@fontsource/noto-serif-tc/400.css';
+import '@fontsource/noto-serif-tc/700.css';
+import '@fontsource/noto-serif-tc/900.css';
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import InkStroke from '../components/InkStroke.astro';
+interface Props { title?: string; description?: string; }
+const { title = 'Dawas Shlef — A thoughtful collection for working with AI', description = 'A quiet corner of the internet for useful AI websites, reusable skills, practical prompts, and thoughtful workflows.' } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f1e7" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="screen-mist" aria-hidden="true"><i></i><i></i></div>
+    <header class="site-header container">
+      <a class="brand" href="/" aria-label="Dawas Shlef home"><span class="brand-icon"><Icon name="book" size={26} /></span><span>Dawas Shlef<span class="brand-dot">.</span></span></a>
+      <nav aria-label="Main navigation"><a class:list={{ active: pathname === '/' || pathname.startsWith('/resources') }} href="/resources/" aria-current={pathname.startsWith('/resources') ? 'page' : undefined}>The library</a><a class:list={{ active: pathname === '/about/' }} href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>The idea</a></nav>
+      <div class="header-actions"><button type="button" class="motion-toggle" data-motion-toggle aria-pressed="false" hidden><span class="motion-symbol" aria-hidden="true">◌</span><span data-motion-label>Motion off</span></button><a class="saved-link" href="/resources/?saved=1"><Icon name="bookmark" size={18} /><span>My shelf</span><span data-saved-count class="saved-count">0</span></a></div>
+    </header>
+    <main id="main" tabindex="-1"><slot /></main>
+    <footer class="site-footer container">
+      <InkStroke class="footer-stroke" />
+      <div class="footer-main"><a class="brand" href="/">Dawas Shlef<span class="brand-dot">.</span></a><p>A small collection.<br />A little more possibility.</p><a href="/about/">A note about this shelf <Icon name="arrow" size={18} /></a></div>
+      <div class="footer-bottom"><span>Collected with intention. Shared with curiosity.</span><span>Take what helps. Make something good.</span></div>
+    </footer>
+    <div class="toast" role="status" aria-live="polite" aria-atomic="true" id="toast"></div>
+    <script>import '../scripts/site';</script>
+    <script>import '../scripts/motion';</script>
+  </body>
+</html>

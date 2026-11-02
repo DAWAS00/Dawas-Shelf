@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ResourceArt from './ResourceArt.astro';
+import Icon from './Icon.astro';
+import { paperEdge, typeLabels } from '../lib/resources';
+interface Props { resource: CollectionEntry<'resources'>; index?: number; filterable?: boolean; }
+const { resource, index = 0, filterable = false } = Astro.props;
+const { data: r, id } = resource;
+const href = `/resources/${id}/`;
+---
+<article class="resource-card" style={`--paper-edge:${paperEdge(id)};--entry-delay:${Math.min(index, 5) * 60}ms`} data-resource={filterable ? id : undefined} data-type={r.type} data-search={`${r.title} ${r.description} ${r.tags.join(' ')} ${r.type}`.toLowerCase()} data-title={r.title} data-updated={r.updated.toISOString()} data-order={r.order}>
+  <div class="paper-surface"></div>
+  <a class="card-preview" href={href} tabindex="-1" aria-hidden="true">
+    {r.preview ? <img src={r.preview} alt="" width="900" height="560" loading="lazy" /> : <ResourceArt art={r.art} title={r.title} />}
+    <span class="preview-caption">{r.previewKind === 'screenshot' && r.preview ? 'Website screenshot' : r.type === 'website' ? 'Illustrated preview' : 'From the collection'}</span>
+  </a>
+  <div class="card-content">
+    <div class="card-meta"><span>{typeLabels[r.type]}</span><span>{r.tags[0]}</span></div>
+    <h3><a href={href}>{r.title}<Icon name="arrow" size={23} /></a></h3>
+    <p>{r.description}</p>
+    <div class="card-bottom"><span>{r.type === 'prompt' ? 'Ready to copy' : r.type === 'workflow' ? `${r.steps?.length || 3} thoughtful steps` : r.type === 'skill' ? 'Reusable instructions' : 'Explore resource'}</span><button class="icon-button save-button" type="button" data-save={id} data-save-title={r.title} aria-label={`Save ${r.title}`} aria-pressed="false" title="Save for later"><Icon name="bookmark" size={19} /></button></div>
+  </div>
+</article>

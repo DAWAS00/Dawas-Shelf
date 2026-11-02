@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+interface Props { art: string; title: string; }
+const { art, title } = Astro.props;
+---
+<div class:list={['resource-art', `art-${art}`]} aria-hidden="true">
+  {art === 'research' && <div class="mini-browser"><div class="mini-top"><span>◌</span><span>a little curiosity goes a long way</span><span>↗</span></div><div class="mini-research"><span class="mini-symbol">✳</span><p>Where questions<br />become understanding.</p><div class="mini-input">What would you like to explore? <span>↑</span></div><div class="mini-chips"><span>Discover</span><span>Research</span><span>Learn</span></div></div></div>}
+  {art === 'code' && <div class="mini-browser code-browser"><div class="mini-top"><span>⌘</span><span>an idea, taking shape</span><span>↗</span></div><div class="code-layout"><div class="code-sidebar"><i></i><i></i><i></i><i></i></div><div class="code-lines"><span>const <b>possibility</b> = {'{'}</span><span>&nbsp; idea: <em>"something useful"</em>,</span><span>&nbsp; curiosity: <em>true</em>,</span><span>&nbsp; next: <em>"make it real"</em></span><span>{'}'};</span><div class="code-status">◌ &nbsp; A small beginning.</div></div></div></div>}
+  {art === 'prompt' && <div class="prompt-art"><span class="quote-mark">“</span><div><span class="art-eyebrow">A better starting point</span><p>{title.includes('brief') ? 'Clarity before\nthe first draft.' : 'Make space for\na better answer.'}</p><div class="handwritten-line"></div><span class="art-note">A prompt worth keeping. &nbsp; ↗</span></div></div>}
+  {art === 'skill' && <div class="skill-art"><div class="folded-page"><span>SKILL.md</span><i></i><i></i><i></i><i></i><div><Icon name="spark" size={28} /></div></div><div><span class="art-eyebrow">A little expertise</span><p>Teach your agent<br />a new way.</p><span class="art-note">Instructions, with intention.</span></div></div>}
+  {art === 'workflow' && <div class="workflow-art"><span class="art-eyebrow">From thought to practice</span><div class="flow-nodes"><span>01<small>Explore</small></span><i>⟶</i><span>02<small>Shape</small></span><i>⟶</i><span>03<small>Create</small></span></div><p>One thoughtful step at a time.</p></div>}
+  {art === 'repository' && <div class="repository-art"><div class="repo-mark">{'{ }'}</div><div><span class="art-eyebrow">Open to possibility</span><p>Good things<br />are built together.</p><span class="art-note">Read. Remix. Make it yours.</span></div></div>}
+</div>

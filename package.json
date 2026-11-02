@@ -1,0 +1,31 @@
+{
+  "name": "dawas-shlef",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "test": "playwright test",
+    "render:hero": "node tools/render-hero.mjs"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.2.0",
+    "@fontsource/ma-shan-zheng": "^5.2.0",
+    "@fontsource/noto-serif-tc": "^5.2.0",
+    "@fontsource/spectral": "^5.2.0",
+    "animejs": "^4.5.0",
+    "astro": "^5.16.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@axe-core/playwright": "^4.10.0",
+    "@playwright/test": "^1.56.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

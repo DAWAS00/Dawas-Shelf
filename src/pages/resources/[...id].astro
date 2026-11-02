@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import InkStroke from '../../components/InkStroke.astro';
+import ResourceArt from '../../components/ResourceArt.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import { paperEdge, recommended, typeLabels } from '../../lib/resources';
+export async function getStaticPaths() {
+  const resources = await getCollection('resources');
+  return resources.map(resource => ({ params: { id: resource.id }, props: { resource } }));
+}
+interface Props { resource: CollectionEntry<'resources'>; }
+const { resource } = Astro.props;
+const { data: r, id } = resource;
+const { Content } = await render(resource);
+const related = (await getCollection('resources')).filter(item => item.id !== id).sort((a, b) => Number(b.data.type === r.type) - Number(a.data.type === r.type) || recommended(a, b)).slice(0, 3);
+const date = r.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={`${r.title} — Dawas Shlef`} description={r.description}>
+  <div class="detail container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/resources/">The library</a><Icon name="chevron" size={13} /><a href={`/resources/?type=${r.type}`}>{r.type === 'repository' ? 'Repositories' : `${typeLabels[r.type]}s`}</a><Icon name="chevron" size={13} /><span aria-current="page">{r.title}</span></nav>
+    <div class="detail-heading"><div><span class="eyebrow">{typeLabels[r.type]} &nbsp; / &nbsp; {r.tags[0]}</span><h1>{r.title}</h1><p>{r.description}</p></div><button class="save-detail text-link" type="button" data-save={id} data-save-title={r.title} aria-pressed="false" aria-label={`Save ${r.title}`}><Icon name="bookmark" size={20} /><span data-save-label>Save to my shelf</span></button></div>
+    <div class="detail-layout">
+      <div class="detail-body">
+        <figure class="detail-preview torn-panel" style={`--paper-edge:${paperEdge(`detail-${id}`)}`}><div class="paper-surface"></div><div class="detail-art">{r.preview ? <img src={r.preview} alt={r.previewAlt} width="900" height="560" /> : <ResourceArt art={r.art} title={r.title} />}</div><figcaption><span>{r.preview && r.previewKind === 'screenshot' ? 'Website screenshot' : 'Editorial illustration · not a live website'}</span><button class="text-link" type="button" data-open-preview>Enlarge <Icon name="external" size={15} /></button></figcaption></figure>
+        {r.steps && <section class="steps-section" aria-labelledby="steps-heading"><span class="eyebrow">Put it into practice</span><h2 id="steps-heading">{r.type === 'skill' ? 'Use this skill' : 'Follow the workflow'}</h2><ol class="steps-list">{r.steps.map((step, i) => <li><span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p>{step}</p></li>)}</ol></section>}
+        {r.copyText && <section class="copy-section torn-panel" style={`--paper-edge:${paperEdge(`copy-${id}`)}`} aria-labelledby="copy-heading"><div class="paper-surface"></div><div class="copy-section-heading"><div><span class="eyebrow">{r.type === 'skill' ? 'Reusable instructions' : 'Make it your own'}</span><h2 id="copy-heading">{r.type === 'skill' ? 'The complete skill' : 'Your starting point'}</h2></div><button class="copy-button" type="button" data-copy-target="copy-content"><Icon name="copy" size={17} /><span>{r.copyLabel || 'Copy text'}</span></button></div><pre id="copy-content" tabindex="0"><code>{r.copyText.trim()}</code></pre><p class="copy-note">{r.type === 'prompt' ? 'Replace the bracketed fields with your own context before using.' : 'Copy includes the complete Markdown file and its metadata.'}</p></section>}
+        <div class="prose"><Content /></div>
+        <a href="/resources/" class="text-link back-to-library"><Icon name="back" size={19} /> Back to the collection</a>
+      </div>
+      <aside class="resource-sidebar" aria-label="Resource information"><div class="torn-panel resource-facts" style={`--paper-edge:${paperEdge(`facts-${id}`)}`}><div class="paper-surface"></div><span class="eyebrow">On this shelf</span><h2>A closer look</h2><InkStroke /><dl><div><dt>Resource type</dt><dd>{typeLabels[r.type]}</dd></div>{r.author && <div><dt>From</dt><dd>{r.author}</dd></div>}<div><dt>Entry updated</dt><dd><time datetime={r.updated.toISOString()}>{date}</time></dd></div>{r.compatibility && <div><dt>Works with</dt><dd>{r.compatibility}</dd></div>}</dl><div class="tag-list">{r.tags.map(tag => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>{tag}</a>)}</div>{r.url && <a class="brush-button" href={r.url} target="_blank" rel="noopener noreferrer"><svg class="brush-surface" viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true"><path d="m8 7 65-3 52 2 66 2 4 22-4 26-65 3-60-3-59 1-2-24Z" /></svg><span>{r.type === 'repository' ? 'Open repository' : 'Visit website'}<Icon name="external" size={17} /></span><span class="sr-only"> (opens in a new tab)</span></a>}{r.copyText && <button class="sidebar-copy text-link" type="button" data-copy-target="copy-content"><Icon name="copy" size={17} />{r.copyLabel || 'Copy text'}</button>}{r.tutorialUrl && <a class="text-link" href={r.tutorialUrl} target="_blank" rel="noopener noreferrer">Watch tutorial <Icon name="external" size={16} /><span class="sr-only"> (opens in a new tab)</span></a>}</div><p class="sidebar-note">A starting point for your own exploration. Keep what helps, and make it yours.</p></aside>
+    </div>
+    <section class="related" aria-labelledby="related-title"><div class="section-heading"><div><span class="eyebrow">Follow another thread</span><h2 id="related-title">A few things nearby.</h2></div></div><div class="resource-grid">{related.map(item => <ResourceCard resource={item} />)}</div></section>
+  </div>
+  <dialog class="preview-dialog" aria-labelledby="preview-title"><div class="dialog-header"><h2 id="preview-title">{r.title} — preview</h2><button class="icon-button" type="button" data-close-preview aria-label="Close preview"><Icon name="close" size={24} /></button></div><div class="dialog-art">{r.preview ? <img src={r.preview} alt={r.previewAlt} width="900" height="560" loading="lazy" /> : <ResourceArt art={r.art} title={r.title} />}</div><p>{r.preview && r.previewKind === 'screenshot' ? 'A saved screenshot. The original website may have changed.' : 'An editorial illustration, not a screenshot or live website.'}</p></dialog>
+</Base>

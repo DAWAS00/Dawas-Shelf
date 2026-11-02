@@ -1,0 +1,17 @@
+---
+import { paperEdge } from '../lib/resources';
+import Icon from './Icon.astro';
+---
+<div class="hero-film" data-hero-film>
+  <div class="film-heading"><span class="eyebrow">From curiosity to creation</span><span class="film-edition">A living collection · 01</span></div>
+  <div class="film-paper torn-panel" style={`--paper-edge:${paperEdge('dawas-hero-film')}`}>
+    <div class="paper-surface"></div>
+    <div class="film-screen">
+      <video id="hero-film" class="hero-video" poster="/media/shelf-hero-poster.webp" width="1280" height="720" muted loop playsinline preload="none" data-video-src="/media/shelf-hero.mp4" aria-hidden="true"></video>
+      <svg class="hero-thread" viewBox="0 0 600 80" fill="none" aria-hidden="true"><path d="M14 56C100 62 99 18 180 30S285 72 345 38 480 22 584 34" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" /></svg>
+    </div>
+    <div class="film-caption"><p>Find a tool. Keep an idea. Make it yours.</p><button type="button" class="film-control" data-video-toggle aria-controls="hero-film" aria-label="Play hero video" aria-pressed="false" hidden><span data-play-icon aria-hidden="true">▷</span><span data-video-label>Play film</span></button></div>
+  </div>
+  <div class="film-topics" aria-label="Explore by resource type"><a href="/resources/?type=website">Websites</a><span aria-hidden="true">·</span><a href="/resources/?type=skill">Skills</a><span aria-hidden="true">·</span><a href="/resources/?type=prompt">Prompts</a><span aria-hidden="true">·</span><a href="/resources/?type=workflow">Workflows <Icon name="arrow" size={14} /></a></div>
+</div>
+<script>import '../scripts/hero-video';</script>
