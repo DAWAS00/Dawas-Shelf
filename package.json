@@ -12,7 +12,8 @@
     "test:tools": "node --test tests/tooling/resource-tools.test.mjs",
     "add": "node tools/add-resource.mjs",
     "ship": "node tools/ship.mjs",
-    "render:hero": "node tools/render-hero.mjs"
+    "render:hero": "node tools/render-hero.mjs",
+    "test:security": "node --test tests/tooling/contributions.test.mjs"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.2.0",

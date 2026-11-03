@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import BrushButton from '../components/BrushButton.astro';
+import InkStroke from '../components/InkStroke.astro';
+import Icon from '../components/Icon.astro';
+import { paperEdge } from '../lib/resources';
+import { contributionEndpoint } from '../lib/contributions';
+const endpoint = contributionEndpoint;
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+const enabled = import.meta.env.CONTRIBUTIONS_ENABLED === 'true' && !!sitekey;
+---
+<Base title="Contribute — Dawas Shlef" description="Share a useful AI tool, skill, prompt, workflow, or repository with Dawas. Every suggestion is reviewed before joining the shelf.">
+  <section class="contribute-page container" aria-labelledby="contribute-title">
+    <div class="contribute-heading"><span class="eyebrow">Good finds are better shared</span><h1 id="contribute-title">A little of your knowledge.<br /><em>A little more possibility.</em></h1><p>Found something that makes working with AI easier? Leave a suggestion for Dawas. Every resource gets a thoughtful review before it joins the shelf.</p></div>
+    <div class="contribute-layout">
+      <aside class="contribute-notes" aria-labelledby="contribution-guide">
+        <span class="eyebrow">A note before you share</span><h2 id="contribution-guide">Useful to you.<br />Helpful to someone.</h2><InkStroke />
+        <ol><li><span>01</span><div><h3>Share the useful part</h3><p>A real use case helps more than a long list of features. Tell us what you made easier.</p></div></li><li><span>02</span><div><h3>Give credit with care</h3><p>Link to the original source. Share instructions you own or have permission to share.</p></div></li><li><span>03</span><div><h3>Leave room for review</h3><p>Dawas checks the fit, credits, and details. Suggestions do not appear on the website automatically.</p></div></li></ol>
+        <p class="contribution-small">Please leave out passwords, API keys, client information, and other private material.</p>
+        <p class="contribution-small">Have a question? <a href="https://www.instagram.com/dawas_tech/" target="_blank" rel="noopener noreferrer">Contact Dawas on Instagram @dawas_tech<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+      </aside>
+      <div class="contribution-panel torn-panel" style={`--paper-edge:${paperEdge('contribution-form')}`}>
+        <div class="paper-surface" aria-hidden="true"></div>
+        <div class="form-heading"><span class="eyebrow">A new addition</span><h2>What belongs on the shelf?</h2><p>Required fields are marked with an asterisk (*).</p></div>
+        <form id="contribution-form" action={endpoint} method="post" data-endpoint={endpoint} data-enabled={String(enabled)} aria-describedby="contribution-privacy">
+          <div class="contribution-trap" aria-hidden="true"><label for="contact-website">Leave this field empty</label><input id="contact-website" name="website" tabindex="-1" autocomplete="off" /></div>
+          <div class="form-grid">
+            <div class="form-field"><label for="resource-type">Resource type *</label><select id="resource-type" name="type" required><option value="" disabled selected>Choose a kind of resource</option><option value="website">Website / tool</option><option value="skill">Agent skill</option><option value="prompt">Prompt</option><option value="workflow">Workflow</option><option value="repository">GitHub repository</option></select></div>
+            <div class="form-field"><label for="resource-title">Resource name *</label><input id="resource-title" name="title" required maxlength="100" autocomplete="off" placeholder="What is it called?" /></div>
+          </div>
+          <div class="form-field"><label for="resource-url">Original source <span data-url-required>(optional)</span></label><input id="resource-url" name="url" type="url" pattern="https://[^\s]+" maxlength="500" placeholder="https://…" aria-describedby="source-help" /><p id="source-help" class="field-help">Use an HTTPS link to the original website or creator. Required for websites and repositories.</p></div>
+          <div class="form-field"><label for="resource-description">What does it help with? *</label><textarea id="resource-description" name="description" required minlength="20" maxlength="1200" rows="4" placeholder="Describe a task it helps you do, and why you recommend it." aria-describedby="description-help"></textarea><p id="description-help" class="field-help">At least 20 characters. A specific example is always welcome.</p></div>
+          <div class="form-field"><label for="resource-content"><span data-content-label>Instructions or example</span> <span data-content-required>(optional)</span></label><textarea id="resource-content" name="content" maxlength="12000" rows="6" placeholder="Paste the prompt, skill instructions, or workflow steps here." aria-describedby="content-help"></textarea><p id="content-help" class="field-help">For prompts, skills, and workflows, include the complete text or steps. Include any tools or setup needed. Plain text and Markdown are welcome.</p></div>
+          <div class="form-field"><label for="resource-author">Original creator <span>(optional)</span></label><input id="resource-author" name="creator" maxlength="160" placeholder="A person, team, or project to credit" autocomplete="off" /></div>
+          <InkStroke class="form-divider" />
+          <fieldset class="contributor-fields"><legend>A note about you</legend><p class="field-help">Both fields are optional. Your email is only for a follow-up about this suggestion.</p><div class="form-grid"><div class="form-field"><label for="contributor-name">Your name</label><input id="contributor-name" name="name" maxlength="100" autocomplete="name" /></div><div class="form-field"><label for="contributor-email">Your email</label><input id="contributor-email" name="email" type="email" maxlength="254" autocomplete="email" /></div></div><label class="form-check"><input type="checkbox" name="credit" value="You may credit my name with this contribution" /><span>You may credit my name if this resource is published.</span></label></fieldset>
+          <p id="contribution-privacy" class="contribution-small">Your suggestion is sent privately to Dawas through our email delivery service for review. Cloudflare verifies submissions to reduce spam. Short-lived, pseudonymous rate-limit records help prevent repeated submissions. Your email will not be published. Only approved resource details and any name you choose to credit may appear on the shelf.</p>
+          {enabled ? <div class="cf-turnstile" data-sitekey={sitekey} data-action="contribute" data-size="flexible"></div> : <p class="contribution-notice">Submissions are temporarily closed while we connect the protected inbox. You can browse the library in the meantime.</p>}
+          <div class="form-actions"><BrushButton type="submit" disabled>Send to Dawas <Icon name="arrow" size={19} /></BrushButton><span>A small contribution.<br />A useful beginning.</span></div>
+          <p class="form-status" id="contribution-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <noscript><p class="contribution-notice">Please enable JavaScript to complete the spam verification and send a suggestion.</p></noscript>
+        </form>
+      </div>
+    </div>
+  </section>
+  {enabled && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+  <script>import '../scripts/contribute';</script>
+</Base>

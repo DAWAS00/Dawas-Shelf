@@ -176,6 +176,14 @@ To regenerate the film, install a local FFmpeg executable, run `npx playwright i
 
 No newsletter form, analytics, or social links are included until real destinations exist. Personalize the name and introductory copy in the components and pages under `src/`.
 
+## Community contributions
+
+The contribution form collects websites, skills, prompts, workflows, and repositories for private manual review. Its protected delivery path is `POST /api/contributions`, a Vercel Node function with server validation, Cloudflare Turnstile verification, atomic Upstash Redis limits, duplicate suppression, and private plain-text email through Resend.
+
+The implementation is local and **closed until configured**. Activate it using [the security and setup guide](docs/CONTRIBUTION-SECURITY.md) and `.env.example`. The former Formspree endpoint must be disabled in its dashboard to close the old direct submission route. No API keys or inbox addresses belong in browser code or Git.
+
+For accepted suggestions, use `npm run add` and the normal review/publishing workflow. Submissions cannot execute skills or publish content. Private contact details must never enter public resource files.
+
 ## GitHub → Vercel
 
 1. In Vercel, create a project and import [`DAWAS00/Dawas-Shelf`](https://github.com/DAWAS00/Dawas-Shelf).
@@ -183,7 +191,7 @@ No newsletter form, analytics, or social links are included until real destinati
 3. Set Node.js to **24**, install with `npm ci`, build with `npm run build`, and publish `dist`. `vercel.json` includes the framework, build command, and output directory.
 4. Deploy. Once connected, commits to `main` trigger production deployments; other branches can receive preview deployments.
 
-No environment variables or Vercel adapter are needed for this static site. This source upload does not create a Vercel project; the GitHub integration must be connected in Vercel once.
+The library stays static and needs no Vercel adapter. Protected contributions require the server-side environment variables and public CAPTCHA site key in `.env.example`. The GitHub integration must be connected in Vercel once; this source upload does not create a new Vercel project.
 
 For later content updates, edit a file in `src/content/resources/`, run the local checks, and push your commit. GitHub stores the source, and the connected Vercel project rebuilds the website from it.
 
@@ -211,8 +219,9 @@ src/content.config.ts         Validated content fields
 src/lib/resource-schema.mjs   Shared Astro and wizard validation
 src/components/               Reusable paper, brush, preview, and library pieces
 src/layouts/Base.astro        Fonts, metadata, navigation, footer
-src/pages/                    Homepage, library, detail pages, about, 404
-src/scripts/                  Search, saved items, copy, previews, Anime.js motion, video playback
+src/pages/                    Homepage, library, detail pages, about, contribute, 404
+src/scripts/                  Library controls, contributions, Anime.js motion, video playback
+src/lib/contributions.ts      Internal contribution API path
 src/styles/global.css         Exact tokens and responsive layouts
 public/previews/              Your website screenshots
 public/media/                 Ready-to-use hero film and static poster

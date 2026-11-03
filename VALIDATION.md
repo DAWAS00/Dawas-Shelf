@@ -3,9 +3,13 @@
 Last checked on 3 November 2026 using Node.js 24.16.0, Astro 5.18.2, Anime.js 4.5.0, and Playwright 1.64.1.
 
 - `npm run check`: 0 errors, 0 warnings, 0 hints.
-- `npm run build`: successful static build; 17 pages including 13 resource details.
+- `npm run build`: successful static build; 18 pages including 13 resource details and the contribution form.
 - `npm run test:tools`: **12 regression tests passed** for resource creation and Git publishing.
-- `npm test`: **26 tests passed** across desktop Chromium and a mobile Chromium viewport/touch profile.
+- `npm test`: **36 browser tests passed** on desktop and mobile Chromium.
+- Protected-form security suite: **21 tests passed**. `npm run test:security` checks server rejection of invalid requests, private/plain-text delivery, CAPTCHA host/action checks, both rate-limit stages, duplicate suppression, and fail-closed upstream errors using mocked services.
+- Browser tests cover closed configuration, resource-specific fields, accepted submissions, persisted cooldown, rate-limit responses, text preservation, mobile overflow, and accessibility, alongside the existing library checks.
+- Production activation is pending. The previous owner-authorized Formspree setup test belongs to the former direct-provider implementation; it does not validate the new Vercel/Turnstile/Redis/Resend path.
+- Private provider credentials, real Redis Lua concurrency, Vercel function packaging/routing, deployed headers, and inbox delivery must be verified in staging/production before enabling submissions. The old Formspree form must be disabled separately.
 - WCAG A/AA automated checks through axe passed on the home, library, skill, prompt, workflow, website detail, and about pages in both viewport profiles.
 - No horizontal overflow on those pages in either test profile.
 - Search and category combinations, sort order, URL restoration, no-results reset, saved-item persistence, blocked storage, exact clipboard content, failed-copy manual selection, preview focus/Escape behavior, reduced motion, and no-JavaScript reading were exercised.

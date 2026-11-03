@@ -33,14 +33,14 @@ const pathname = Astro.url.pathname;
     <div class="screen-mist" aria-hidden="true"><i></i><i></i></div>
     <header class="site-header container">
       <a class="brand" href="/" aria-label="Dawas Shlef home"><span class="brand-icon"><Icon name="book" size={26} /></span><span>Dawas Shlef<span class="brand-dot">.</span></span></a>
-      <nav aria-label="Main navigation"><a class:list={{ active: pathname === '/' || pathname.startsWith('/resources') }} href="/resources/" aria-current={pathname.startsWith('/resources') ? 'page' : undefined}>The library</a><a class:list={{ active: pathname === '/about/' }} href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>The idea</a></nav>
+      <nav aria-label="Main navigation"><a class:list={{ active: pathname === '/' || pathname.startsWith('/resources') }} href="/resources/" aria-current={pathname.startsWith('/resources') ? 'page' : undefined}>The library</a><a class:list={{ active: pathname === '/about/' }} href="/about/" aria-current={pathname === '/about/' ? 'page' : undefined}>The idea</a><a class:list={{ active: pathname === '/contribute/' }} href="/contribute/" aria-current={pathname === '/contribute/' ? 'page' : undefined}>Contribute</a></nav>
       <div class="header-actions"><button type="button" class="motion-toggle" data-motion-toggle aria-pressed="false" hidden><span class="motion-symbol" aria-hidden="true">◌</span><span data-motion-label>Motion off</span></button><a class="saved-link" href="/resources/?saved=1"><Icon name="bookmark" size={18} /><span>My shelf</span><span data-saved-count class="saved-count">0</span></a></div>
     </header>
     <main id="main" tabindex="-1"><slot /></main>
     <footer class="site-footer container">
       <InkStroke class="footer-stroke" />
       <div class="footer-main"><a class="brand" href="/">Dawas Shlef<span class="brand-dot">.</span></a><p>A small collection.<br />A little more possibility.</p><a href="/about/">A note about this shelf <Icon name="arrow" size={18} /></a></div>
-      <div class="footer-bottom"><span>Collected with intention. Shared with curiosity.</span><span>Take what helps. Make something good.</span></div>
+      <div class="footer-bottom"><span>Collected with intention. Shared with curiosity.</span><a href="https://www.instagram.com/dawas_tech/" target="_blank" rel="noopener noreferrer">Contact Dawas on Instagram <Icon name="arrow" size={14} /><span class="sr-only"> (opens in a new tab)</span></a><a href="/contribute/">Have something useful? Add to the shelf <Icon name="arrow" size={14} /></a></div>
     </footer>
     <div class="toast" role="status" aria-live="polite" aria-atomic="true" id="toast"></div>
     <script>import '../scripts/site';</script>

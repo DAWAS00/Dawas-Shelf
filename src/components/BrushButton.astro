@@ -1,9 +1,9 @@
 ---
-interface Props { href?: string; secondary?: boolean; class?: string; }
-const { href, secondary = false, class: className = '' } = Astro.props;
+interface Props { href?: string; secondary?: boolean; class?: string; type?: 'button' | 'submit' | 'reset'; disabled?: boolean; }
+const { href, secondary = false, class: className = '', type = 'button', disabled = false } = Astro.props;
 const Tag = href ? 'a' : 'button';
 ---
-<Tag href={href} type={href ? undefined : 'button'} class:list={['brush-button', { secondary }, className]}>
+<Tag disabled={href ? undefined : disabled} href={href} type={href ? undefined : type} class:list={['brush-button', { secondary }, className]}>
   <svg class="brush-surface" viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true"><path d="M8 7 23 5 29 7 63 4 79 6 123 4 141 6 176 5 192 9 194 18 191 25 195 40 190 55 171 57 147 55 128 59 98 56 65 59 48 56 21 58 7 53 9 43 5 35 8 24 5 17Z" /></svg>
   <span><slot /></span>
 </Tag>
