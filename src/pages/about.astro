@@ -5,5 +5,29 @@ import BrushButton from '../components/BrushButton.astro';
 import Icon from '../components/Icon.astro';
 ---
 <Base title="The idea — Dawas Shlef" description="A thoughtful place to discover tools, skills, prompts, and workflows for working with AI.">
-  <section class="about-page container"><span class="eyebrow">A note about this shelf</span><h1>A little less noise.<br /><em>A little more intention.</em></h1><div class="about-layout"><div class="prose"><p class="lede">There is always another tool, another prompt, another way to work. This is a place to slow down and find a useful starting point.</p><h2>A library you can use</h2><p>Explore a website before opening it. Give your agent a reusable skill. Copy a prompt and make it your own. Follow a workflow one thoughtful step at a time.</p><h2>Keep what helps</h2><p>Save resources to My shelf as you browse. Your saved items stay in this browser, on this device. There is no account to create.</p><h2>A small beginning</h2><p>This first collection brings together public tools, original starter prompts, and sample skills and workflows. It is a starting library, ready to grow with the resources and personal notes its curator adds.</p><p>Website illustrations are labeled as previews. They are visual introductions, rather than screenshots or live versions of the products. Original authors and projects are credited on each resource page.</p><BrushButton href="/resources/">Find something useful <Icon name="arrow" size={19} /></BrushButton></div><div class="about-art"><Landscape small /><p>Collect with care.<br />Create with curiosity.</p></div></div></section>
+  <section class="about-page container"><span class="eyebrow">A note about this shelf</span><h1>A little less noise.<br /><em>A little more intention.</em></h1><div class="about-layout"><div class="prose"><p class="lede">There is always another tool, another prompt, another way to work. This is a place to slow down and find a useful starting point.</p><h2>A library you can use</h2><p>Explore a website before opening it. Give your agent a reusable skill. Copy a prompt and make it your own. Follow a workflow one thoughtful step at a time.</p><h2>Keep what helps</h2><p>Save resources to My shelf as you browse. Your saved items stay in this browser, on this device. There is no account to create.</p><h2>A small beginning</h2><p>This first collection brings together public tools, original starter prompts, and sample skills and workflows. It is a starting library, ready to grow with the resources and personal notes its curator adds.</p><p>Website illustrations are labeled as previews. They are visual introductions, rather than screenshots or live versions of the products. Original authors and projects are credited on each resource page.</p><h2>Get in touch</h2>
+<div class="about-contact">
+  <div class="portrait-frame"><img src="/images/dawas-portrait.jpeg" alt="Dawas, curator of Dawas Shlef" width="1440" height="1440" loading="lazy" decoding="async" /></div>
+  <div class="contact-copy"><span class="eyebrow">The person behind the shelf</span><h3>Dawas</h3><p>Have a question about the shelf, or just want to say hello?</p><a class="instagram-contact" href="https://www.instagram.com/dawas_tech/" target="_blank" rel="noopener noreferrer"><Icon name="instagram" size={22} /><span>@dawas_tech</span><Icon name="external" size={15} /><span class="sr-only"> on Instagram (opens in a new tab)</span></a></div>
+</div><BrushButton href="/resources/">Find something useful <Icon name="arrow" size={19} /></BrushButton></div><div class="about-art"><Landscape small /><p>Collect with care.<br />Create with curiosity.</p></div></div></section>
 </Base>
+
+<style>
+  .about-contact { display: flex; align-items: center; gap: 30px; margin: 30px 0 12px; }
+  .portrait-frame { position: relative; flex: 0 0 144px; width: 144px; height: 144px; padding: 7px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 1px rgb(109 143 125 / 25%), 0 10px 28px rgb(35 40 42 / 7%); }
+  .portrait-frame::before { content: ''; position: absolute; inset: -7px 3px 3px -7px; border-radius: 50%; border: 1px solid rgb(109 143 125 / 30%); pointer-events: none; }
+  .portrait-frame img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .contact-copy { min-width: 0; }
+  .contact-copy .eyebrow { font-size: 9px; letter-spacing: .12em; }
+  .contact-copy h3 { font-family: var(--font-display); font-size: 32px; font-weight: 600; margin: 5px 0 0; line-height: 1.2; }
+  .contact-copy p { margin: 8px 0 14px; font-size: 14px; line-height: 1.8; }
+  .prose .instagram-contact { display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px; background: rgb(109 143 125 / 10%); border-radius: 6px; text-decoration: none; font-size: 13px; color: var(--celadon-deep); transition: background var(--dur) var(--ease-bruma); }
+  .prose .instagram-contact:hover { background: rgb(109 143 125 / 20%); }
+  @media (max-width: 540px) {
+    .about-contact { align-items: flex-start; gap: 20px; }
+    .portrait-frame { flex-basis: 100px; width: 100px; height: 100px; padding: 5px; margin-top: 5px; }
+    .contact-copy h3 { font-size: 29px; }
+    .contact-copy .eyebrow { font-size: 8px; }
+    .contact-copy p { font-size: 13px; }
+  }
+</style>
