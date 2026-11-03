@@ -19,6 +19,14 @@ The original design specification is preserved in [docs/DESIGN.md](docs/DESIGN.m
 | Playwright + axe | Desktop/mobile browser and automated accessibility checks |
 | Vercel | Static hosting with deployments from GitHub |
 
+## Learning articles
+
+`/learning/` lists reading guides from `src/content/learning/*.md`. Each file creates a page at `/learning/<filename>/` with a generated table of contents, author, date, reading time, and original-source link.
+
+The first guide reviews Anthropic's prompt engineering tutorial, its notebook structure, nine chapters, appendices, and older model assumptions. Source links are pinned to the reviewed repository commit. The website does not execute the tutorial or ask readers for API keys.
+
+To add a guide, create a Markdown file with `title`, `description`, `published`, `author`, `category`, `source`, `sourceLabel`, and `sourceCommit` frontmatter. Use `##` headings for table-of-contents entries. Credit original material and distinguish your own exercises from source lessons.
+
 ## Quick workflows: Add & Ship
 
 ### 1. Add a new resource in 1 step
@@ -90,7 +98,7 @@ Astro builds the website to `dist/`. There is no database, account system, API k
 - Enlarged accessible previews with focus management and Escape-to-close.
 - Static HTML remains readable without JavaScript. Search, saving, copying, and preview enlargement require JavaScript.
 
-The seed collection is sample editorial content, ready to replace with your own resources and personal notes. Website previews are labeled editorial illustrations; the collection also supports real screenshots.
+The collection contains editable starter resources and eleven curated websites: Noiced, Lucide, Phosphor, Feather, ThreeUI, shadcn.io Design, Bklit UI, Watermelon UI, designmd.ai, Awesome Skills, and skills.sh. The new entries include local website screenshots, descriptions, source credits, and practical usage notes. Screenshots and editorial illustrations are labeled separately. Agent-skill directories are website entries; individual copyable skills belong in the skill collection.
 
 ## Pages
 

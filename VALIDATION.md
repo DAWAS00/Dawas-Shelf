@@ -3,7 +3,8 @@
 Last checked on 3 November 2026 using Node.js 24.16.0, Astro 5.18.2, Anime.js 4.5.0, and Playwright 1.64.1.
 
 - `npm run check`: 0 errors, 0 warnings, 0 hints.
-- `npm run build`: successful static build; 18 pages including 13 resource details and the contribution form.
+- `npm run build`: successful static build; 31 pages including 24 resource details, the contribution form, and two Learning pages.
+- Learning update: four targeted desktop/mobile browser checks passed for article navigation, nine chapter links, table-of-contents targets, accessibility, and overflow on the article and existing core pages. The previous complete browser run remains recorded below; the full suite was not repeated for this update.
 - `npm run test:tools`: **12 regression tests passed** for resource creation and Git publishing.
 - `npm test`: **36 browser tests passed** on desktop and mobile Chromium.
 - Protected-form security suite: **21 tests passed**. `npm run test:security` checks server rejection of invalid requests, private/plain-text delivery, CAPTCHA host/action checks, both rate-limit stages, duplicate suppression, and fail-closed upstream errors using mocked services.
@@ -29,6 +30,6 @@ Main-thread long tasks were observed during a desktop startup review (67, 161, 5
 
 Fonts are self-hosted through the specified Fontsource packages and exact fallback stacks. Site text uses the supplied ink, ink-light, and deep-celadon tokens; ordinary celadon is reserved for graphical marks. Borderless surfaces and separate clipped paper layers preserve visible keyboard focus.
 
-Website previews in the starter content are labeled original editorial illustrations. Real screenshot fields and enlarged image previews are implemented, but no screenshots of third-party websites are included. The resources are editable starter content, not a statement of the owner’s personal usage.
+Eleven curated website entries include local screenshots captured on 3 November 2026, source links, credits, and usage notes. These include design tools and agent-skill directories. Earlier starter previews remain labeled editorial illustrations. Screenshot detail pages and enlarged previews use the existing image support. Entries do not imply personal usage unless explicitly stated.
 
 The repository excludes build output, test artifacts, dependencies, and local environment files. It includes the ready-to-use hero film and poster, editable rendering source, lockfile, original design specification, content, tests, GitHub workflow, and Vercel settings. Vercel deployment must be connected separately.
