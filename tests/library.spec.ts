@@ -3,22 +3,31 @@ import AxeBuilder from '@axe-core/playwright';
 
 test('search, type filters, empty state, reset, and URL restoration work together', async ({ page }) => {
   await page.goto('/resources/');
-  await expect(page.locator('[data-resource]:visible')).toHaveCount(12);
+  // Use Astro's rendered inventory: it already resolves nested and excluded files.
+  const total = Number(await page.locator('[data-filter="all"] span').textContent());
+  const websites = Number(await page.locator('[data-filter="website"] span').textContent());
+  await expect(page.locator('[data-resource]:visible')).toHaveCount(total);
   await page.getByRole('button', { name: /^Websites/ }).click();
-  await expect(page.locator('[data-resource]:visible')).toHaveCount(4);
-  await page.getByRole('searchbox').fill('research');
-  await expect(page.locator('[data-resource]:visible')).toHaveCount(1);
-  await expect(page).toHaveURL(/type=website&q=research/);
+  await expect(page.locator('[data-resource]:visible')).toHaveCount(websites);
+  await page.getByRole('searchbox').fill('Perplexity');
+  await expect(page.locator('[data-resource="perplexity"]')).toBeVisible();
+  await expect(page.locator('[data-resource="cursor"]')).toBeHidden();
+  await expect(page).toHaveURL(/type=website&q=Perplexity/);
   await page.reload();
-  await expect(page.getByRole('searchbox')).toHaveValue('research');
-  await expect(page.locator('[data-resource]:visible')).toHaveCount(1);
+  await expect(page.getByRole('searchbox')).toHaveValue('Perplexity');
+  await expect(page.locator('[data-resource="perplexity"]')).toBeVisible();
+  await expect(page.locator('[data-resource="cursor"]')).toBeHidden();
   await page.getByRole('searchbox').fill('no-matching-resource-xyz');
   await expect(page.locator('#empty-state')).toBeVisible();
   await page.getByRole('button', { name: /Clear all filters/ }).click();
-  await expect(page.locator('[data-resource]:visible')).toHaveCount(12);
+  await expect(page.locator('[data-resource]:visible')).toHaveCount(total);
   await expect(page.getByRole('searchbox')).toBeFocused();
   await page.getByLabel('Sort resources').selectOption('az');
-  await expect(page.locator('[data-resource]:visible').first().getByRole('heading')).toHaveText('A useful second perspective');
+  const alphabetized = await page.locator('[data-resource]:visible').evaluateAll(cards => {
+    const titles = cards.map(card => (card as HTMLElement).dataset.title!);
+    return titles.every((title, i) => i === 0 || titles[i - 1].localeCompare(title) <= 0);
+  });
+  expect(alphabetized).toBeTruthy();
 });
 
 test('saving persists through detail navigation and reload; removal updates My shelf', async ({ page }) => {
@@ -156,11 +165,12 @@ test('data saver keeps the poster without downloading a video', async ({ page })
   await expect(page.getByRole('button', { name: 'Play hero video' })).toBeVisible();
 });
 
-test('Markdown pages and resource links render without JavaScript', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+test('Markdown pages and resource links render without JavaScript', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/resources/');
-  await expect(page.locator('[data-resource]')).toHaveCount(12);
+  await page.goto('/resources/');
+  const total = Number(await page.locator('[data-filter="all"] span').textContent());
+  await expect(page.locator('[data-resource]')).toHaveCount(total);
   await page.getByRole('link', { name: 'Research companion', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Research companion', exact: true })).toBeVisible();
   await expect(page.locator('#copy-content')).toContainText('name: research-companion');

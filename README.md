@@ -19,6 +19,46 @@ The original design specification is preserved in [docs/DESIGN.md](docs/DESIGN.m
 | Playwright + axe | Desktop/mobile browser and automated accessibility checks |
 | Vercel | Static hosting with deployments from GitHub |
 
+## Quick workflows: Add & Ship
+
+### 1. Add a new resource in 1 step
+Run the interactive CLI wizard:
+```sh
+npm run add
+```
+It asks for the title, type (`website`, `skill`, `prompt`, `workflow`, `repository`), description, tags, source URL, and original author. The wizard validates the entry with the same schema Astro uses, creates its Markdown file in `src/content/resources/`, and runs the project check. Invalid input creates no file; a failed project check removes only the new entry and returns an error.
+
+Or specify options directly via command-line flags:
+```sh
+node tools/add-resource.mjs --title "Bolt.new" --type website --url "https://bolt.new" --desc "In-browser AI web sandbox" --tags "Builder,Code,Web"
+```
+
+For a real skill, import its complete instructions rather than generating placeholder skill content:
+
+```sh
+node tools/add-resource.mjs --title "My skill" --type skill --desc "What this skill helps with" --tags "Planning,Agents" --author "Original author" --copy-file "./path/to/SKILL.md"
+```
+
+Prompts also require actual text through `--copy-file` or `--copy-text`. Skill dependencies and supporting files must still be reviewed and supplied separately; importing a wrapper such as Grill Me does not import Grilling automatically. The source file is read without changing it. Source URLs and author information are entered explicitly.
+
+Other options include `--slug`, `--art`, `--copyLabel`, `--compatibility`, and `--steps "First step;Second step"`. Use `node tools/add-resource.mjs --help` for a quick reference. Missing URL schemes receive HTTPS; existing HTTP or other unsupported schemes are rejected instead of rewritten into a broken address. Titles that cannot produce an English URL slug need an explicit `--slug`.
+
+You can also copy starter templates from `templates/` into `src/content/resources/`, including category subfolders. Replace the example content, dates, authors, and copyable instructions before publishing. Underscore-prefixed files such as `_draft.md` are excluded by the content loader. The wizard leaves editorial guidance in the body for you to finish; passing validation does not mean that the editorial content is complete.
+
+### 2. Ship to GitHub and Vercel in 1 step
+```sh
+npm run ship
+```
+This command:
+1. Fetches the current remote branch and stops if newer remote work must be integrated.
+2. Runs `npm run test:tools`, `npm run check`, and `npm run build`.
+3. Lists, stages, and commits all unignored changes with a custom or default commit message.
+4. Pushes the **current branch** to GitHub using literal Git arguments, so quotation marks and shell characters in the message are preserved.
+
+You can supply a message with `npm run ship -- "Add a new resource"`. A synchronized, clean branch is a no-op; already committed local changes can still be pushed. Failed validation stops before staging, committing, or pushing. The script does not force-push or merge remote work automatically.
+
+After the push, GitHub Actions runs its checks. If this repository is connected to Vercel, Vercel can start a deployment. A successful push does **not** confirm deployment success: check the Vercel dashboard for the result. Production updates come from the configured production branch, usually `main`; other branches can create previews. There is no guaranteed deployment duration.
+
 ## Run locally
 
 Use Node.js 22.12 or newer (Node 24 is supported).
@@ -43,7 +83,7 @@ Astro builds the website to `dist/`. There is no database, account system, API k
 ## What is included
 
 - Home, full resource library, about page, custom 404, and generated detail pages.
-- Twelve editable starter entries: four websites, two skills, two prompts, two workflows, and two repositories.
+- Thirteen editable starter entries: five websites, two skills, two prompts, two workflows, and two repositories.
 - Search across titles, descriptions, types, and tags; category filters; sorting; URL-restored filter state; and a useful empty state.
 - My shelf bookmarks stored on the visitor’s device. If browser storage is blocked, the current page keeps a temporary shelf and explains the limitation.
 - Full prompt and skill copy buttons, a manual selection fallback, workflow instructions, source attribution, and related resources.
@@ -153,13 +193,14 @@ Astro static deployment needs no Vercel adapter. See the official [Astro on Verc
 
 ```sh
 npx playwright install chromium
+npm run test:tools
 npm run build
 npm test
 ```
 
 Playwright checks desktop and mobile search/filter combinations, bookmark persistence, blocked storage, exact copy payloads, copy failure, modal keyboard behavior, reduced motion, no-JavaScript content, horizontal overflow, and WCAG A/AA checks through axe. It also checks the new name, real video playback, manual pause, off-screen pause, the saved motion switch, and Data Saver. Tests run against the static production preview. Automated checks supplement visual and keyboard review; they are not a complete accessibility certification.
 
-The included GitHub Actions workflow runs type checks, the production build, and browser tests on pushes and pull requests. See [VALIDATION.md](VALIDATION.md) for the local verification record.
+The included GitHub Actions workflow runs the resource/publishing regression tests, type checks, production build, and browser tests on pushes and pull requests. Tool tests use temporary local repositories and never push to GitHub. Browser tests use Astro's rendered inventory rather than independently counting Markdown files, so nested resources and excluded drafts follow the actual loader. See [VALIDATION.md](VALIDATION.md) for the verification record.
 
 ## Files to know
 
@@ -167,6 +208,7 @@ The included GitHub Actions workflow runs type checks, the production build, and
 docs/DESIGN.md                 Original visual specification
 src/content/resources/*.md    Resource content
 src/content.config.ts         Validated content fields
+src/lib/resource-schema.mjs   Shared Astro and wizard validation
 src/components/               Reusable paper, brush, preview, and library pieces
 src/layouts/Base.astro        Fonts, metadata, navigation, footer
 src/pages/                    Homepage, library, detail pages, about, 404
@@ -175,6 +217,9 @@ src/styles/global.css         Exact tokens and responsive layouts
 public/previews/              Your website screenshots
 public/media/                 Ready-to-use hero film and static poster
 tools/render-hero.mjs         Editable local motion-graphics renderer
+tools/add-resource.mjs        Resource wizard and text-file importer
+tools/ship.mjs                Checked commit and current-branch push workflow
+templates/                    Editable starter resource files
 tests/                        Browser and accessibility checks
 vercel.json                   Static Vercel settings
 ```

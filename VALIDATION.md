@@ -1,13 +1,17 @@
 # Validation
 
-Checked on 2 November 2026 using Node.js 24.16.0, Astro 5.18.2, Anime.js 4.5.0, and Playwright 1.64.1.
+Last checked on 3 November 2026 using Node.js 24.16.0, Astro 5.18.2, Anime.js 4.5.0, and Playwright 1.64.1.
 
 - `npm run check`: 0 errors, 0 warnings, 0 hints.
-- `npm run build`: successful static build; 16 pages including 12 resource details.
+- `npm run build`: successful static build; 17 pages including 13 resource details.
+- `npm run test:tools`: **12 regression tests passed** for resource creation and Git publishing.
 - `npm test`: **26 tests passed** across desktop Chromium and a mobile Chromium viewport/touch profile.
 - WCAG A/AA automated checks through axe passed on the home, library, skill, prompt, workflow, website detail, and about pages in both viewport profiles.
 - No horizontal overflow on those pages in either test profile.
 - Search and category combinations, sort order, URL restoration, no-results reset, saved-item persistence, blocked storage, exact clipboard content, failed-copy manual selection, preview focus/Escape behavior, reduced motion, and no-JavaScript reading were exercised.
+- Resource tests cover escaped text, real skill/prompt imports, duplicate prevention, invalid input, validation rollback, URL schemes, and ordering through nested folders with excluded drafts.
+- Publishing tests use disposable local Git repositories. They verify literal commit-message characters, validation failures preventing publication, already-committed changes being pushed, clean synchronized branches being skipped, and newer remote work preventing a push. No test pushes to GitHub or Vercel.
+- Browser counts come from Astro's rendered inventory instead of a second filesystem parser. The production-preview checks can use a separate base URL, including the no-JavaScript case.
 - New branding is verified in the header, footer, and page title.
 - Actual video playback, manual pause/resume, off-screen pause, persisted motion settings, and Data Saver are checked in both viewport profiles. Playback tests exercise the explicit play control, since mobile browsers can decline autoplay.
 - Reduced motion and saved motion-off settings prevent automatic video loading. Reduced motion disables the JavaScript timelines and CSS mist; the static poster remains visible.
