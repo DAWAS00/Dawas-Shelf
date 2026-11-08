@@ -294,6 +294,7 @@ body:has(.library-intro) .library { padding-bottom: 85px; }
 .prose p { color: var(--ink-light); margin-block: 14px; font-size: 16px; line-height: 1.95; }
 .prose a:not(.brush-button) { color: var(--celadon-deep); text-decoration: underline; text-underline-offset: 4px; }
 .prose li { margin-block: 12px; }
+.prose pre { padding: 16px; background: var(--paper-mist); white-space: pre-wrap; overflow-wrap: anywhere; }
 .resource-sidebar { position: sticky; top: 30px; }
 .resource-facts { padding: 30px 27px; }
 .resource-facts h2 { font-size: 32px; margin: 8px 0 12px; }

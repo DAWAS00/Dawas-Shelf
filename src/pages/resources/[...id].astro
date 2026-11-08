@@ -14,6 +14,8 @@ export async function getStaticPaths() {
 interface Props { resource: CollectionEntry<'resources'>; }
 const { resource } = Astro.props;
 const { data: r, id } = resource;
+const copiesPrompt = (r.copyKind ?? r.type) === 'prompt';
+const copiesSkill = r.type === 'skill' && !copiesPrompt;
 const { Content } = await render(resource);
 const related = (await getCollection('resources')).filter(item => item.id !== id).sort((a, b) => Number(b.data.type === r.type) - Number(a.data.type === r.type) || recommended(a, b)).slice(0, 3);
 const date = r.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -26,7 +28,18 @@ const date = r.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'lon
       <div class="detail-body">
         <figure class="detail-preview torn-panel" style={`--paper-edge:${paperEdge(`detail-${id}`)}`}><div class="paper-surface"></div><div class="detail-art">{r.preview ? <img src={r.preview} alt={r.previewAlt} width="900" height="560" /> : <ResourceArt art={r.art} title={r.title} />}</div><figcaption><span>{r.preview && r.previewKind === 'screenshot' ? 'Website screenshot' : 'Editorial illustration · not a live website'}</span><button class="text-link" type="button" data-open-preview>Enlarge <Icon name="external" size={15} /></button></figcaption></figure>
         {r.steps && <section class="steps-section" aria-labelledby="steps-heading"><span class="eyebrow">Put it into practice</span><h2 id="steps-heading">{r.type === 'skill' ? 'Use this skill' : 'Follow the workflow'}</h2><ol class="steps-list">{r.steps.map((step, i) => <li><span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p>{step}</p></li>)}</ol></section>}
-        {r.copyText && <section class="copy-section torn-panel" style={`--paper-edge:${paperEdge(`copy-${id}`)}`} aria-labelledby="copy-heading"><div class="paper-surface"></div><div class="copy-section-heading"><div><span class="eyebrow">{r.type === 'skill' ? 'Reusable instructions' : 'Make it your own'}</span><h2 id="copy-heading">{r.type === 'skill' ? 'The complete skill' : 'Your starting point'}</h2></div><button class="copy-button" type="button" data-copy-target="copy-content"><Icon name="copy" size={17} /><span>{r.copyLabel || 'Copy text'}</span></button></div><pre id="copy-content" tabindex="0"><code>{r.copyText.trim()}</code></pre><p class="copy-note">{r.type === 'prompt' ? 'Replace the bracketed fields with your own context before using.' : 'Copy includes the complete Markdown file and its metadata.'}</p></section>}
+        {r.copyText && <section class="copy-section torn-panel" style={`--paper-edge:${paperEdge(`copy-${id}`)}`} aria-labelledby="copy-heading">
+          <div class="paper-surface"></div>
+          <div class="copy-section-heading">
+            <div>
+              <span class="eyebrow">{copiesSkill ? 'Reusable instructions' : 'Make it your own'}</span>
+              <h2 id="copy-heading">{copiesSkill ? 'The complete skill' : 'Your starting point'}</h2>
+            </div>
+            <button class="copy-button" type="button" data-copy-target="copy-content"><Icon name="copy" size={17} /><span>{r.copyLabel || 'Copy text'}</span></button>
+          </div>
+          <pre id="copy-content" tabindex="0"><code>{r.copyText.trim()}</code></pre>
+          <p class="copy-note">{copiesPrompt ? 'Replace the bracketed fields with your own context before using.' : 'Copy includes the complete Markdown file and its metadata.'}</p>
+        </section>}
         <div class="prose"><Content /></div>
         <a href="/resources/" class="text-link back-to-library"><Icon name="back" size={19} /> Back to the collection</a>
       </div>

@@ -24,6 +24,7 @@ export const resourceSchema = z.object({
   previewKind: z.enum(['illustration', 'screenshot']).default('illustration'),
   art: z.enum(['research', 'code', 'prompt', 'workflow', 'skill', 'repository']).default('research'),
   copyLabel: text().optional(),
+  copyKind: z.enum(['skill', 'prompt']).optional(),
   // Preserve actual skill/prompt text, including indentation and newlines.
   copyText: z.string().refine(value => value.trim().length > 0, 'Enter the complete text.').optional(),
   compatibility: text().optional(),
