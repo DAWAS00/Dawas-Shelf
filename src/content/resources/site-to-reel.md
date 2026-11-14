@@ -49,6 +49,12 @@ Show one library search and one bookmark action. Capture the search result, save
 
 The example includes timelines, capture scripts, voice lines, and review notes. To render it, capture the site again and supply the fonts and other assets used by the project. [Dawas Shlef worked example](https://github.com/DAWAS00/site-to-reel/blob/8e389b0f5377061b5afaa7cd4d334585ada833c8/examples/dawas-shlef/README.md)
 
+## Companion skill: SaaS Animation v2
+
+Use Site to Reel for the storyboard and real website captures. Use SaaS Animation when a shot calls for a browser-based 3D composition, illustrated motion, or a Blender render. You can use the animation it produces as a short insert in the reel.
+
+<a href="/downloads/saas-animation-v2.skill" download="saas-animation-v2.skill">Download SaaS Animation v2 (.skill)</a> · [Installation and starter prompt](/resources/saas-animation/)
+
 ## Full instructions and downloads
 
 - [Download the full skill folder](https://github.com/DAWAS00/site-to-reel/archive/8e389b0f5377061b5afaa7cd4d334585ada833c8.zip)
