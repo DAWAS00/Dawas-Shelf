@@ -8,6 +8,8 @@ order: 26
 url: https://github.com/DAWAS00/site-to-reel
 author: DAWAS00
 art: skill
+preview: /previews/site-to-reel.webp
+previewAlt: Torn-paper browser window and vertical video frame connected by an ink arrow on ivory paper.
 compatibility: Claude Code with Playwright CLI, FFmpeg, Python, and the video-director skill.
 copyKind: prompt
 copyLabel: Copy starter prompt
